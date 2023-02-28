@@ -9,23 +9,14 @@ class Movie:
     def get_reviews(self):
         return self.reviews
           
-
     def get_viewers(self):
-        viewers = []
-        for review in self.reviews:
-            viewers.append(review.viewer)
-        return viewers  
+        return [review.viewer for review in self.reviews]
 
     def average_rating(self):
         return (sum(review.rating for review in self.reviews) / len(self.reviews) )
 
     def highest_review(self):
-        highest = self.reviews[0]
-        for review in self.reviews:
-            if review.rating > highest.rating:
-                highest = review
-        return highest         
-
+        return (max(self.reviews, key=lambda review:review.rating))        
 
 class Viewer:
     def __init__(self, username):
@@ -39,24 +30,13 @@ class Viewer:
         return self.reviews
 
     def get_movies(self):
-        movies = []
-        for review in self.reviews:
-            movies.append(review.movie)
-        return movies     
+        return [review.movie for review in self.reviews]    
 
     def has_reviewed(self, movie):
-        for review in self.reviews:
-            if movie == review.movie:
-                return True
+        return movie in self.get_movies()
                 
-    
-
-
-
-    def rate_movie(self, movie, rating):
-        new_review = Review(self, movie, rating)
-        self.reviews.append(new_review)
-
+    def rate_movie(self, movie, rating):    
+        self.reviews.append(Review(self, movie, rating))
 
 class Review:
     def __init__(self, viewer, movie, rating):
